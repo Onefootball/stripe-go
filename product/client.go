@@ -29,10 +29,11 @@ func (c Client) New(params *stripe.ProductParams) (*stripe.Product, error) {
 	if params != nil {
 		body = &url.Values{}
 
-		// Required fields
-		body.Add("name", params.Name)
-
 		// Optional fields
+		if params.Name != "" {
+			body.Add("name", params.Name)
+		}
+
 		if len(params.Desc) > 0 {
 			body.Add("description", params.Desc)
 		}
@@ -138,12 +139,12 @@ func (c Client) Update(id string, params *stripe.ProductParams) (*stripe.Product
 // Get returns the details of an product
 // For more details see https://stripe.com/docs/api#retrieve_product.
 func Get(id string) (*stripe.Product, error) {
-	return getC().Get(id)
+	return getC().Get(id, nil)
 }
 
-func (c Client) Get(id string) (*stripe.Product, error) {
+func (c Client) Get(id string, params *stripe.Params) (*stripe.Product, error) {
 	product := &stripe.Product{}
-	err := c.B.Call("GET", "/products/"+id, c.Key, nil, nil, product)
+	err := c.B.Call("GET", "/products/"+id, c.Key, nil, params, product)
 
 	return product, err
 }

@@ -18,7 +18,7 @@ const (
 // of any *Params structure.
 type Params struct {
 	Exp            []string
-	Meta           map[string]string
+	Meta           map[string]string `json:"metadata"`
 	Extra          url.Values
 	IdempotencyKey string
 
